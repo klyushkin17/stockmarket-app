@@ -10,5 +10,5 @@ import androidx.room.RoomDatabase
 )
 abstract class StockDatabase: RoomDatabase() {
 
-    abstract val dao: Dao
+    abstract val dao: StockDao
 }
