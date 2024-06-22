@@ -16,9 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class IntradayInfoParser @Inject constructor(
-
-): CSVParser<IntradayInfo> {
+class IntradayInfoParser @Inject constructor(): CSVParser<IntradayInfo> {
     override suspend fun parse(stream: InputStream): List<IntradayInfo> {
         val csvReader = CSVReader(InputStreamReader(stream))
         return withContext(Dispatchers.IO) {

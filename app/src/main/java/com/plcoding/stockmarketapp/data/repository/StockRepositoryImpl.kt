@@ -18,7 +18,7 @@ import okio.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
+@Singleton // Используется Singletion для того, чтобы убедиться, что мы используем лишь один экземпляр repository
 class StockRepositoryImpl @Inject constructor(
     private val api: StockApi,
     private val db: StockDatabase,
@@ -32,17 +32,19 @@ class StockRepositoryImpl @Inject constructor(
         fetchFromRemote: Boolean,
         query: String
     ): Flow<Resource<List<CompanyListing>>> {
-        return flow {
+        return flow {//Данная функция возвращает flow, в который
+            //поступают значения типа Resource, которые будут собраны в presentation уровне
             emit(Resource.Loading(true))
             val localListings = dao.searchCompanyListings(query)
-            emit(Resource.Success(
+            emit(Resource.Success( //Здесь во ViewModel передается успешно завершенное получение данных из Room
                 data = localListings.map {
                     it.toCompanyListing()
                 }
             ))
 
             val isDbEmpty = localListings.isEmpty() && query.isBlank()
-            val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
+            val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote //Проверка, стоит ли получать данные из Api
+            //или достаточно воспользоваться Room
             if (shouldJustLoadFromCache) {
                 emit(Resource.Loading(false))
                 return@flow
