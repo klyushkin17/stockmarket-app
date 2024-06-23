@@ -18,11 +18,13 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
 
+    //Зависимость для companyListringsParser
     @Binds
     @Singleton
     abstract fun bindCompanyListingsParser(
+        //Для того, чтобы внедрить нужный тип daggerHilt должен исользовать данную имплементацию
         companyListingsParser: CompanyListingsParser
-    ): CSVParser<CompanyListing>
+    ): CSVParser<CompanyListing>//Тип, который должен уметь вндерять daggerHilt
 
     @Binds
     @Singleton
@@ -30,9 +32,11 @@ abstract class RepositoryModule {
         intradayInfoParser: IntradayInfoParser
     ): CSVParser<IntradayInfo>
 
+    //Для того, чтобы внедрить repository в ViewModel используется следующая функция
     @Binds
     @Singleton
     abstract fun bindStockRepository(
+        //Чтобы внедрить нужный тип, dagger должен использовать данную имплементацию
         stockRepositoryImpl: StockRepositoryImpl
-    ): StockRepository
+    ): StockRepository //Мы научить dagger внедрять данный тип
 }

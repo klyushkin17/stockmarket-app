@@ -39,8 +39,8 @@ fun CompanyListingsScreen(
     ) {
         OutlinedTextField(
             value = state.searchQuery,
-            onValueChange = {
-                viewModel.onEvent(CompanyListingsEvent.OnSearchQueryChange(it))
+            onValueChange = { query ->
+                viewModel.onEvent(CompanyListingsEvent.OnSearchQueryChange(query))
             },
             modifier = Modifier
                 .padding(16.dp)
@@ -61,6 +61,8 @@ fun CompanyListingsScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxWidth()
             ){
+                //Список команий создается через индексы для того, чтобы было возможным проверить
+                //не является ли элемент последним в списке, чтобы добавить Divider
                 items(state.companies.size) {i ->
                     val company = state.companies[i]
                     CompanyListingsItem(
@@ -83,7 +85,6 @@ fun CompanyListingsScreen(
             }
         }
     }
-
 }
 
 

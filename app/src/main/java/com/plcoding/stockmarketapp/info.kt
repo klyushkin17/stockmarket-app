@@ -38,6 +38,32 @@ dao - data access object - класс, в котором описывается 
 как Success, Error, Loading. В дальнейшем наши функции из Repository будут возвращать класс Resource, который
 позволит нам проверить ответ на наличие ошибок
 
+CSV парсеры так же отвечают принципу SOLID и Clean Architecture, так как имеют общий интерфейс
+CSVParser, от которого зависят CompanyListingsParser и IntradayInfoParser
 
+Класс CompanyListringsParser предназначен для перевод InputStream в вид List<CompanyListring>
+Это делается с помощью объекта типа CSVReader и его бработки через .map в потоке Dispather.IO
+
+В дирректории presentation для каждого экрана создается 4 файла: Screen, ViewModel, State, Event
+Screen: разметка на Jetpack Compose
+ViewModel: логика экрана
+State: переменные олицетворяющие состояния экрана
+
+В функции getCompanyListrings из ViewModel используется функция .copy для обновления данных из State,
+благодаря чему мы можем оставлять поля с модификатором val
+
+Для перемещения между экранами было использована библиотека Compose Destinaton Library
+
+Для передачи объектам готовых зависимостей был использован DaggerHilt. Для его работы необходимо:
+1) Создать Application класс, нашем случае это StockApplication
+2) Объявить данный класс в манифесте
+3) Создать класс Module для описания dependency injectin
+4) Прописать аннотацию @AndroidEntryPoint для MainActivity
+
+В данном проекте были созданы два файла типа Module.
+В первом описываются методы для внедрения Room и Retrofit объектов, при этом используются
+функции с аннотацией @Provides
+Во втором же прописаны методы связывающие интерфейсы с их Implementation классами
+При этом функции явялются абстрактными и помечаются аннотацией @Binds
 
 */

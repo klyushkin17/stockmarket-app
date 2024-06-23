@@ -49,8 +49,11 @@ class StockRepositoryImpl @Inject constructor(
                 emit(Resource.Loading(false))
                 return@flow
             }
+            //Вызов функции из api
             val remoteListing = try {
                 val response = api.getListings()
+                /*В данном случае можно было прописать логику парсинга прямо здесь, но это не
+                отвечает принципу Single Responsibility из SOLID*/
                 companyListingsParser.parse(response.byteStream())
             } catch (e: IOException) { // parsing errors
                 e.printStackTrace()
@@ -62,6 +65,9 @@ class StockRepositoryImpl @Inject constructor(
                 null
             }
 
+            //Здесь представлен блок кода, который передает, полученные из API данные
+            //Но для того, чтобы иметь единственный источник ресурсов, данные сначала заносятся в кеш
+            //а только потом передаются во ViewModel из кэша(Прицип Clear Architecture)
             remoteListing?.let {listings ->
                 dao.clearCompanyListings()
                 dao.insertCompanyListings(listings.map {

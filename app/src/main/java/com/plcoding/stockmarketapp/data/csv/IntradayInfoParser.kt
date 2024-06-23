@@ -30,8 +30,10 @@ class IntradayInfoParser @Inject constructor(): CSVParser<IntradayInfo> {
                     dto.toIntradayInfo()
                 }
                 .filter {
+                    //Фильтрация, которая оставляет только те даты, которые являются вчерашним днем
                     it.date.dayOfMonth == LocalDate.now().minusDays(1).dayOfMonth
                 }
+                //Сортируем по часам
                 .sortedBy {
                     it.date.hour
                 }
@@ -40,5 +42,4 @@ class IntradayInfoParser @Inject constructor(): CSVParser<IntradayInfo> {
                 }
         }
     }
-
 }

@@ -17,6 +17,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    //Retrofit dependency
     @Provides
     @Singleton
     fun provideStockApi(): StockApi {
@@ -27,6 +28,7 @@ object AppModule {
             .create()
     }
 
+    //Room dependency
     @Provides
     @Singleton
     fun provideStockDatabase(app: Application): StockDatabase {
